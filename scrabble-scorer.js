@@ -71,44 +71,35 @@ function vowelBonusScorer(word) {
 let scrabbleScorer;
 
 const scoringAlgorithms = [
-   {
+
+   alg1 = {
       name: 'Scrabble',
       description: 'The traditional scoring algorithm.',
       scoringFunction: oldScrabbleScorer
    },
-   {
+   alg2 = {
       name: 'Simple Score',
       description: "Each letter is worth 1 point.",
       scoringFunction: simpleScorer
    },
-   {
+   alg3 = {
          name: 'Bonus Vowels',
       description: 'Vowels are 3 points, consonants are 1 point.',
       scoringFunction: vowelBonusScorer
-   },
+   }
 ];
 
 function scorerPrompt() {
-    console.log("Welcome to the Scrabble score calculator!");
-    console.log("Which scoring algorithm would you like to use?");
-    console.log("0 - Scrabble: The traditional scoring algorithm.");
-    console.log("1 - Simple Score: Each letter is worth 1 point.");
-    console.log("2 - Bonus Vowels: Vowels are worth 3 pts, and consonants are 1 pt.");
-
-    const selectedAlgorithm = input.question("Enter 0, 1, or 2: ");
-    
-    // Validate user input
-    if (selectedAlgorithm !== '0' && selectedAlgorithm !== '1' && selectedAlgorithm !== '2') {
-        console.log("Invalid input. Please choose 0, 1, or 2.");
-        return scorerPrompt(); // Recurse to prompt again
-    }
-
-    return {
-        algorithm: selectedAlgorithm,
-        name: getAlgorithmName(selectedAlgorithm) // You can implement this function to return algorithm names
-    };
+   const readline = require('readline-sync');
+   const choice = readline.question('Which scoring algorithm would you like to use? \n0 - Simple: One point per character\n1 - Vowel Bonus: Vowels are worth 3 points\n2 - Scrabble: Uses scrabble point system\nEnter 0, 1, or 2: ');
+   const selectedAlgorithm = scoringAlgorithms[choice];
+if (!selectedAlgorithm) {
+   console.log('INVALID INPUT. Enter 0, 1, or 2.');
+   return scorerPrompt(); //Recurse to prompt again
 }
 
+return selectedAlgorithm;
+}
 
 function transform() {};
 
@@ -117,9 +108,12 @@ let newPointStructure;
 function runProgram() {
    initialPrompt(); 
    const word = input.question("Enter a word: ");
-   console.log(`${oldScrabbleScorer(word)}`);
-   console.log(`Simple Score: ${simpleScorer(word)}`);
-   console.log(`Vowel Bonus Score: ${vowelBonusScorer(word)}`);
+   selectedAlgorithm = scorerPrompt();
+   const score = selectedAlgorithm.scoringFunction(word);
+   console.log(`Score for ${word} = \n${score}`);
+   // console.log(`${oldScrabbleScorer(word)}`);
+   // console.log(`Simple Score: ${simpleScorer(word)}`);
+   // console.log(`Vowel Bonus Score: ${vowelBonusScorer(word)}`);
 
 }
 
