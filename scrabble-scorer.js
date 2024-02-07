@@ -68,26 +68,36 @@ function vowelBonusScorer(word) {
     return score;
 }
 
-let scrabbleScorer;
-
-const scoringAlgorithms = [
-
-   alg1 = {
-      name: 'Scrabble',
-      description: 'The traditional scoring algorithm.',
-      scoringFunction: oldScrabbleScorer
-   },
-   alg2 = {
-      name: 'Simple Score',
-      description: "Each letter is worth 1 point.",
-      scoringFunction: simpleScorer
-   },
-   alg3 = {
-         name: 'Bonus Vowels',
-      description: 'Vowels are 3 points, consonants are 1 point.',
-      scoringFunction: vowelBonusScorer
+// let scrabbleScorer;
+function scrabbleScorer(word) {
+   word = word.toUpperCase().split("");
+   let score = 0
+   for (let letter of word) {
+      score += newPointStructure[letter];
    }
-];
+   return score;
+}
+
+
+let simpleScorerAlg = {
+name: 'Simple Score',
+description: "Each letter is worth 1 point.",
+scoringFunction: simpleScorer
+}
+
+let vowelBonusScorerAlg = {
+   name: 'Bonus Vowels',
+   description: 'Vowels are 3 points, consonants are 1 point.',
+   scoringFunction: vowelBonusScorer
+}
+
+let scrabbleScorerAlg = {
+   name: 'Scrabble',
+   description: 'The traditional scoring algorithm.',
+   scoringFunction: scrabbleScorer
+}
+const scoringAlgorithms = [simpleScorerAlg, vowelBonusScorerAlg, scrabbleScorerAlg];
+
 
 function scorerPrompt() {
    const readline = require('readline-sync');
@@ -101,28 +111,65 @@ if (!selectedAlgorithm) {
 return selectedAlgorithm;
 }
 
-function transform() {};
-
-// let newPointStructure;
-function createNewPointStructure() {
-  const newPointStructure = {};
-  const scrabbleValues = {
-    a: 1, b: 3, c: 3, d: 2, e: 1, f: 4, g: 2, h: 4,
+// function createNewPointStructure() {
+  const newPointStructure = {
+       a: 1, b: 3, c: 3, d: 2, e: 1, f: 4, g: 2, h: 4,
     i: 1, j: 8, k: 5, l: 1, m: 3, n: 1, o: 1, p: 3,
     q: 10, r: 1, s: 1, t: 1, u: 1, v: 4, w: 4, x: 8,
     y: 4, z: 10
   };
+//    A: 1, B: 3, C: 3, D: 2, E: 1, F: 4, G: 2, H: 4, I: 1, J: 8, K: 5, L: 1, M: 3, N: 1, O: 1, P: 3, Q: 10, R: 1, S: 1, T: 1, U: 1, V: 4, W: 4, X: 8, Y: 4, Z: 10
+// };
+ // This is the function that transforms the old point structure to the new one
 
-  // Create newPointStructure by mapping oldPointStructure
-  for (const letter in scrabbleValues) {
-    newPointStructure[letter] = scrabbleValues[letter];
-  }
+function transform(oldPointStructure) {
+// Create an empty object to store the new point structure
 
-  return newPointStructure;
-}
+   // let newPointStructure = {};
+   // for (const letter in scrabbleValues) {
+   //    newPointStructure[letter] = scrabbleValues[letter];
+   //  }
+   //  return newPointStructure;
 
-// Example usage:
-const newPointStructure = createNewPointStructure();
+   // Loop through each key-value pair in the old point structure
+   for (let key in oldPointStructure) {
+     // Loop through each letter in the value array
+     for (let letter of oldPointStructure[key]) {
+       // Convert the letter to lowercase and assign it as a key in the new object
+       // Assign the point as the value for that key
+       newPointStructure[letter.toLowerCase()] = Number(key);
+     }
+   }
+   // Return the new point structure object
+   return newPointStructure;
+ }
+ 
+ // Test the function by calling it with the old point structure object
+ console.log(transform(oldPointStructure)); 
+  
+ 
+// let newPointStructure;
+
+
+
+//   newPointStructure = transform(oldPointStructure);
+
+//   const scrabbleValues = {
+//     a: 1, b: 3, c: 3, d: 2, e: 1, f: 4, g: 2, h: 4,
+//     i: 1, j: 8, k: 5, l: 1, m: 3, n: 1, o: 1, p: 3,
+//     q: 10, r: 1, s: 1, t: 1, u: 1, v: 4, w: 4, x: 8,
+//     y: 4, z: 10
+//   };
+
+//   Create newPointStructure by mapping oldPointStructure
+//   for (const letter in scrabbleValues) {
+//     newPointStructure[letter] = scrabbleValues[letter];
+//   }
+//   return newPointStructure;
+
+
+// // Example usage:
+// const newPointStructure = createNewPointStructure();
 // console.log(newPointStructure);
 
 
