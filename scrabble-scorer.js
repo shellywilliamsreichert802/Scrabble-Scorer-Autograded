@@ -70,10 +70,11 @@ function vowelBonusScorer(word) {
 
 // let scrabbleScorer;
 function scrabbleScorer(word) {
-   word = word.toUpperCase().split("");
+   word = word.toLowerCase();
    let score = 0
-   for (let letter of word) {
-      score += newPointStructure[letter];
+   for (let i = 0; i < word.length; i++) {
+      const letter = word[i];
+      score += newPointStructure[letter] || 0;
    }
    return score;
 }
@@ -123,6 +124,7 @@ return selectedAlgorithm;
  // This is the function that transforms the old point structure to the new one
 
 function transform(oldPointStructure) {
+
 // Create an empty object to store the new point structure
 
    // let newPointStructure = {};
